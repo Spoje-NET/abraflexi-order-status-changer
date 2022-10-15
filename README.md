@@ -39,7 +39,7 @@ ABRAFLEXI_COMPANY=demo_de
 EASE_LOGGER=syslog|console
 ```
 
-Tool load order by given DOCUMENTID and serch for line begins with `ORDER_NOTE_KEYWORD`
+Tool load order by given DOCUMENTID and serch it's note field for line begins with `ORDER_NOTE_KEYWORD`
 then change Order's field **stavUzivK** accordingly
 
 
