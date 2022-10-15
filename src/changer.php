@@ -33,7 +33,7 @@ function stateExtract($noteRaw) {
 }
 
 try {
-    $orderer = new \AbraFlexi\ObjednavkaPrijata(\Ease\Functions::cfg('DOCUMENTID', $argc ? $argv[1] : null));
+    $orderer = new \AbraFlexi\ObjednavkaPrijata(\Ease\Functions::cfg('DOCUMENTID', $argc>1 ? $argv[1] : null));
 
 //  AbraFlexi States Availble:
 //
@@ -68,7 +68,7 @@ try {
         $orderer->stripBody();
         $orderer->setDataValue('stavUzivK', $stavUzivK);
         $result = $orderer->sync();
-        $orderer->addStatusMessage('Change to ' . $stavUzivK . ' for ' . $state . ' state', $result ? 'success' : 'error' );
+        $orderer->addStatusMessage('Change to ' . $stavUzivK . ' for "' . $state . '" state', $result ? 'success' : 'error' );
     } else {
         $orderer->addStatusMessage(_('Order without known state'), 'warning');
     }
