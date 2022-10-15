@@ -33,7 +33,7 @@ function stateExtract($noteRaw) {
 }
 
 try {
-    $orderer = new \AbraFlexi\ObjednavkaPrijata(\Ease\Functions::cfg('DOCUMENTID', $argc>1 ? $argv[1] : null));
+    $orderer = new \AbraFlexi\ObjednavkaPrijata(\Ease\Functions::cfg('DOCUMENTID', $argc>1 ? $argv[1] : ''));
 
 //  AbraFlexi States Availble:
 //
