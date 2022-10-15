@@ -11,7 +11,6 @@ Vcs-Browser: https://github.com/Spoje-NET/abraflexi-order-status-changer
 Package: abraflexi-order-status-changer
 Architecture: any
 Multi-Arch: foreign
-Depends: ${shlibs:Depends},
-	${misc:Depends}, php-spojenet-abraflexi, php-cli
-
+Depends: ${shlibs:Depends}, ${misc:Depends}, php-spojenet-abraflexi, php-cli, composer-debian
 Description: Change AbraFlexi order status according the keyword in note field. 
+ Search for keyword in AbraFlexi order note and change order's status accordingly
