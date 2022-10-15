@@ -26,7 +26,7 @@ function stateExtract($noteRaw) {
     $state = null;
     if (strstr($noteRaw, ':')) {
         foreach (preg_split('/\n/', $noteRaw) as $noteLine) {
-            if (stristr($noteLine, 'Stav:')) {
+            if (stristr($noteLine, \Ease\Functions::cfg('ORDER_NOTE_KEYWORD','Note:'))) {
                 $state = trim(preg_split('/: /', $noteLine, 2)[1], " \t\n\r\0\x0B'\"");
             }
         }

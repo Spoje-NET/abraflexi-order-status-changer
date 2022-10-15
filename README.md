@@ -22,3 +22,24 @@ sudo apt install abraflexi-order-status-changer
 ```
 
 ![Deb installation](debian/debinst.png?raw=true)
+
+
+Usage
+-----
+
+Set Environment variables and/or `/etc/abraflexi-order-status-changer/.env` file.
+
+```
+DOCUMENTID=code:00000003/22-1
+ORDER_NOTE_KEYWORD=Stav:
+ABRAFLEXI_URL=https://demo.flexibee.eu:5434
+ABRAFLEXI_LOGIN=winstrom
+ABRAFLEXI_PASSWORD=winstrom
+ABRAFLEXI_COMPANY=demo_de
+EASE_LOGGER=syslog|console
+```
+
+Tool load order by given DOCUMENTID and serch for line begins with `ORDER_NOTE_KEYWORD`
+then change Order's field **stavUzivK** accordingly
+
+
