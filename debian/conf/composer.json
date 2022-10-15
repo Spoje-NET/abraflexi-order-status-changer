@@ -1,0 +1,28 @@
+{
+  "name": "deb/abraflexi-order-status-changer",
+  "description": "Change abraflexi order status according the keyword in note.",
+  "type": "project",
+  "version": "0.1",
+  "authors": [
+    {
+      "name": "Vítězslav Dvořák",
+      "email": "info@vitexsoftware.cz"
+    }
+  ],
+  "config": {
+    "vendor-dir": "/var/lib/abraflexi-order-status-changer"
+  },
+  "require": {
+    "deb/abraflexi": "*"
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "/usr/share/php/EaseCore"
+    },
+    {
+      "type": "path",
+      "url": "/usr/share/php/AbraFlexi"
+    }
+  ]
+}

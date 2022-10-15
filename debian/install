@@ -1,0 +1,6 @@
+debian/conf/composer.json       usr/lib/abraflexi-order-status-changer/
+src/*			        usr/lib/abraflexi-order-status-changer/
+bin/*                           usr/bin/
+.env.example	                etc/
+#i18n/cs_CZ/LC_MESSAGES/abraflexi-order-status-changer.mo	usr/share/locale/cs_CZ/LC_MESSAGES
+

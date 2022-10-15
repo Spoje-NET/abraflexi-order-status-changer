@@ -1,0 +1,13 @@
+{
+    "name": "vendor/abraflexi-order-status-changer",
+    "description": "Description of project abraflexi-order-status-changer.",
+    "authors": [
+        {
+            "name": "Vítězslav Dvořák",
+            "email": "info@vitexsoftware.cz"
+        }
+    ],
+    "require": {
+        "spojenet/flexibee": "dev-main"
+    }
+}

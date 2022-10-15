@@ -1,0 +1,6 @@
+.env
+vendor
+nbproject
+composer.lock
+/debian/.debhelper/
+/debian/abraflexi-order-status-changer/
