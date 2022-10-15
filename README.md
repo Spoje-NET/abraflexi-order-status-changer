@@ -21,3 +21,4 @@ sudo apt update
 sudo apt install abraflexi-order-status-changer
 ```
 
+![Deb installation](debian/debinst.png?raw=true)
