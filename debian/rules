@@ -8,5 +8,5 @@ override_dh_install:
 	dh_install
 	mv debian/abraflexi-order-status-changer/etc/abraflexi-order-status-changer/.env.example               debian/abraflexi-order-status-changer/etc/abraflexi-order-status-changer/.env
 	sed -i -e 's/..\/i18n/\/usr\/share\/locale/g'            	      debian/abraflexi-order-status-changer/usr/lib/abraflexi-order-status-changer/*.php
-	sed -i -e "s/__DIR__ . '\/..\/vendor/\/var\/lib\/composer\/abraflexi-order-status-changer/" 	      debian/abraflexi-order-status-changer/usr/lib/abraflexi-order-status-changer/*.php
+	sed -i -e "s/__DIR__ . '\/..\/vendor/'\/var\/lib\/composer\/abraflexi-order-status-changer/" 	      debian/abraflexi-order-status-changer/usr/lib/abraflexi-order-status-changer/*.php
 	sed -i -e 's/\.\./\/etc\/abraflexi-order-status-changer/g'                                  debian/abraflexi-order-status-changer/usr/lib/abraflexi-order-status-changer/*.php
