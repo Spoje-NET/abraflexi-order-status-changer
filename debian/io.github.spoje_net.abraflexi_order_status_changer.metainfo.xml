@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="console-application">
+  <id>io.github.spoje_net.abraflexi_order_status_changer</id>
+  
+  <name>AbraFlexi Order Status Changer</name>
+  <summary>Change AbraFlexi order status according the keyword in note field. </summary>
+  
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  
+  <description>
+    <p>
+      Search for keyword in AbraFlexi Order and update it&apos;s status accordingly.
+    </p>
+  </description>
+  
+  <icon type="stock">abraflexi-order-status-changer</icon>
+  
+  <categories>
+    <category>Utility</category>
+    <category>FinTech</category>
+  </categories>
+  
+  <provides>
+    <binary>abraflexi-order-status-changer</binary>
+  </provides>
+</component>
