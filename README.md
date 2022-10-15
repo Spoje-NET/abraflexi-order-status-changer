@@ -30,7 +30,6 @@ Usage
 Set Environment variables and/or `/etc/abraflexi-order-status-changer/.env` file.
 
 ```
-DOCUMENTID=code:00000003/22-1
 ORDER_NOTE_KEYWORD=Stav:
 ABRAFLEXI_URL=https://demo.flexibee.eu:5434
 ABRAFLEXI_LOGIN=winstrom
@@ -38,6 +37,14 @@ ABRAFLEXI_PASSWORD=winstrom
 ABRAFLEXI_COMPANY=demo_de
 EASE_LOGGER=syslog|console
 ```
+
+Then run:
+
+`abraflexi-order-status-changer code:00000003/22-1'
+
+Or specify the document ID as environment variable or .env file DOCUMENTID value:
+
+`DOCUMENTID=code:00000003/22-1 abraflexi-order-status-changer`
 
 Tool load order by given DOCUMENTID and serch it's note field for line begins with `ORDER_NOTE_KEYWORD`
 then change Order's field **stavUzivK** accordingly

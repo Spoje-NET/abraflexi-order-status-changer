@@ -13,26 +13,27 @@ if (file_exists('../.env')) {
     \Ease\Shared::singleton()->loadConfig('../.env', true);
 }
 
-foreach (['DOCUMENTID','ABRAFLEXI_URL','ABRAFLEXI_LOGIN','ABRAFLEXI_PASSWORD','ABRAFLEXI_COMPANY','EASE_LOGGER'] as $cfgKey){
-    if(empty(\Ease\Functions::cfg($cfgKey))){
-        echo 'Requied configuration '.$cfgKey.' is not set.';
+foreach (['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'EASE_LOGGER'] as $cfgKey) {
+    if (empty(\Ease\Functions::cfg($cfgKey))) {
+        echo 'Requied configuration ' . $cfgKey . ' is not set.';
         exit(1);
     }
 }
-
-$orderer = new \AbraFlexi\ObjednavkaPrijata(\Ease\Functions::cfg('DOCUMENTID'));
 
 function stateExtract($noteRaw) {
     $state = null;
     if (strstr($noteRaw, ':')) {
         foreach (preg_split('/\n/', $noteRaw) as $noteLine) {
-            if (stristr($noteLine, \Ease\Functions::cfg('ORDER_NOTE_KEYWORD','Note:'))) {
+            if (stristr($noteLine, \Ease\Functions::cfg('ORDER_NOTE_KEYWORD', 'Note:'))) {
                 $state = trim(preg_split('/: /', $noteLine, 2)[1], " \t\n\r\0\x0B'\"");
             }
         }
     }
     return $state;
 }
+
+try {
+    $orderer = new \AbraFlexi\ObjednavkaPrijata(\Ease\Functions::cfg('DOCUMENTID', $argc ? $argv[1] : null));
 
 //  AbraFlexi States Availble:
 //
@@ -44,7 +45,9 @@ function stateExtract($noteRaw) {
 //    Vydáno/přijato (stavDoklObch.vydano)
 //    Částečně hotovo (stavDoklObch.castHotovo)
 
-    switch (stateExtract($orderer->getDataValue('poznam'))) {
+    $state = stateExtract($orderer->getDataValue('poznam'));
+
+    switch ($state) {
         case 'Hotovo':
             $stavUzivK = 'stavDoklObch.hotovo';
             break;
@@ -65,8 +68,11 @@ function stateExtract($noteRaw) {
         $orderer->stripBody();
         $orderer->setDataValue('stavUzivK', $stavUzivK);
         $result = $orderer->sync();
-        $orderer->addStatusMessage('Change to ' . $stavUzivK, $result ? 'success' : 'error' );
+        $orderer->addStatusMessage('Change to ' . $stavUzivK . ' for ' . $state . ' state', $result ? 'success' : 'error' );
     } else {
         $orderer->addStatusMessage(_('Order without known state'), 'warning');
     }
-
+} catch (AbraFlexi\Exception $exc) {
+    echo $exc->getMessage();
+    exit(1);
+}
