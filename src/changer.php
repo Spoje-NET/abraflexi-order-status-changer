@@ -13,13 +13,14 @@ if (file_exists('../.env')) {
     \Ease\Shared::singleton()->loadConfig('../.env', true);
 }
 
+foreach (['DOCUMENTID','ABRAFLEXI_URL','ABRAFLEXI_LOGIN','ABRAFLEXI_PASSWORD','ABRAFLEXI_COMPANY','EASE_LOGGER'] as $cfgKey){
+    if(empty(\Ease\Functions::cfg($cfgKey))){
+        echo 'Requied configuration '.$cfgKey.' is not set.';
+        exit(1);
+    }
+}
 
-//$orderer = new \AbraFlexi\ObjednavkaPrijata(\Ease\Functions::cfg('DOCUMENTID'));
-//print_r($orderer->getDataValue('poznam'));
-
-$orderer = new \AbraFlexi\ObjednavkaPrijata();
-
-$notes = $orderer->getColumnsFromAbraFlexi(['poznam'], ['limit' => 0]);
+$orderer = new \AbraFlexi\ObjednavkaPrijata(\Ease\Functions::cfg('DOCUMENTID'));
 
 function stateExtract($noteRaw) {
     $state = null;
@@ -33,8 +34,8 @@ function stateExtract($noteRaw) {
     return $state;
 }
 
-foreach ($notes as $note) {
-
+//  AbraFlexi States Availble:
+//
 //    Připraveno (stavDoklObch.pripraveno)
 //    Schváleno (stavDoklObch.schvaleno)
 //    Částečně na cestě (stavDoklObch.castecneNaCeste)
@@ -43,9 +44,10 @@ foreach ($notes as $note) {
 //    Vydáno/přijato (stavDoklObch.vydano)
 //    Částečně hotovo (stavDoklObch.castHotovo)
 
-    switch (stateExtract($note['poznam'])) {
+    switch (stateExtract($orderer->getDataValue('poznam'))) {
         case 'Hotovo':
             $stavUzivK = 'stavDoklObch.hotovo';
+            break;
         case 'Stornována':
             $stavUzivK = 'stavDoklObch.storno';
             break;
@@ -66,6 +68,5 @@ foreach ($notes as $note) {
         $orderer->addStatusMessage('Change to ' . $stavUzivK, $result ? 'success' : 'error' );
     } else {
         $orderer->addStatusMessage(_('Order without known state'), 'warning');
-        break;
     }
-}
+
