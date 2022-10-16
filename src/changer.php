@@ -66,8 +66,10 @@ try {
         case 'Vyřízena':
         case 'Vyřizuje se':
         case '':
-        default:
             $stavUzivK = 'stavDoklObch.nespec';
+            break;
+        default:
+            $orderer->addStatusMessage('ORDER_NOTE_KEYWORD "',\Ease\Functions::cfg('ORDER_NOTE_KEYWORD', 'Note:').'" not found in order note.','warning');
     }
 
     if ($stavUzivK) {
