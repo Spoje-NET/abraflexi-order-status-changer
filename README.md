@@ -50,3 +50,4 @@ Tool load order by given DOCUMENTID and serch it's note field for line begins wi
 then change Order's field **stavUzivK** accordingly
 
 
+Notge: Tool is ready to be run by [AbraFlexi Changes processor](https://github.com/VitexSoftware/abraflexi-changes-processor)
