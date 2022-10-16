@@ -20,6 +20,13 @@ foreach (['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_C
     }
 }
 
+/**
+ * Filter value by keyword
+ * 
+ * @param string $noteRaw
+ * 
+ * @return string
+ */
 function stateExtract($noteRaw) {
     $state = null;
     if (strstr($noteRaw, ':')) {
@@ -32,7 +39,7 @@ function stateExtract($noteRaw) {
     return $state;
 }
 
-if($argc > 1){
+if ($argc > 1) {
     $docId = $argv[1];
 } else {
     $docId = \Ease\Functions::cfg('DOCUMENTID');
@@ -69,16 +76,21 @@ try {
             $stavUzivK = 'stavDoklObch.nespec';
             break;
         default:
-            $orderer->addStatusMessage('ORDER_NOTE_KEYWORD "',\Ease\Functions::cfg('ORDER_NOTE_KEYWORD', 'Note:').'" not found in order note.','warning');
+            $orderer->addStatusMessage('ORDER_NOTE_KEYWORD "', \Ease\Functions::cfg('ORDER_NOTE_KEYWORD', 'State:') . '" not found in order note.', 'warning');
     }
 
-    if ($stavUzivK) {
-        $orderer->stripBody();
-        $orderer->setDataValue('stavUzivK', $stavUzivK);
-        $result = $orderer->sync();
-        $orderer->addStatusMessage('Change to ' . $stavUzivK . ' for "' . $state . '" state', $result ? 'success' : 'error' );
+    if ($orderer->getRecordID()) {
+
+        if ($stavUzivK) {
+            $orderer->stripBody();
+            $orderer->setDataValue('stavUzivK', $stavUzivK);
+            $result = $orderer->sync();
+            $orderer->addStatusMessage('Change to ' . $stavUzivK . ' for "' . $state . '" state', $result ? 'success' : 'error' );
+        } else {
+            $orderer->addStatusMessage(_('Order without known state'), 'warning');
+        }
     } else {
-        $orderer->addStatusMessage(_('Order without known state'), 'warning');
+        $orderer->addStatusMessage(_('The DOCUMENTID is not specified. Aborting'), 'warning');
     }
 } catch (AbraFlexi\Exception $exc) {
     echo $exc->getMessage();
