@@ -27,17 +27,36 @@ foreach (['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_C
  * 
  * @return string
  */
-function stateExtract($noteRaw) {
+function stateExtract($noteRaw, $keyword) {
     $state = null;
     if (strstr($noteRaw, ':')) {
         foreach (preg_split('/\n/', $noteRaw) as $noteLine) {
-            if (stristr($noteLine, \Ease\Functions::cfg('ORDER_NOTE_KEYWORD', 'Note:'))) {
+            if (stristr($noteLine, $keyword)) {
                 $state = trim(preg_split('/: /', $noteLine, 2)[1], " \t\n\r\0\x0B'\"");
             }
         }
     }
     return $state;
 }
+
+/**
+ * 
+ * @param string $needle
+ * @param string $haystack
+ * 
+ * @return boolean
+ */
+function valueFound(string $needle, string $haystack) {
+    $found = false;
+    foreach (explode(',', $haystack) as $candidat) {
+        if ($candidat == $needle) {
+            $found = true;
+        }
+    }
+    return $found;
+}
+
+$keyword = \Ease\Functions::cfg('ORDER_NOTE_KEYWORD', 'Note:');
 
 if ($argc > 1) {
     $docId = $argv[1];
@@ -58,26 +77,54 @@ try {
 //    Vydáno/přijato (stavDoklObch.vydano)
 //    Částečně hotovo (stavDoklObch.castHotovo)
 
-    $state = stateExtract($orderer->getDataValue('poznam'));
+    $state = stateExtract($orderer->getDataValue('poznam'), $keyword);
 
-    switch ($state) {
-        case 'Hotovo':
-            $stavUzivK = 'stavDoklObch.hotovo';
-            break;
-        case 'Stornována':
-            $stavUzivK = 'stavDoklObch.storno';
-            break;
-        case 'Nevyřízená':
-        case 'Nevyzvednutá':
-        case 'Probíhá příprava':
-        case 'Vyřízena':
-        case 'Vyřizuje se':
-        case '':
-            $stavUzivK = 'stavDoklObch.nespec';
-            break;
-        default:
-            $orderer->addStatusMessage('ORDER_NOTE_KEYWORD "', \Ease\Functions::cfg('ORDER_NOTE_KEYWORD', 'State:') . '" not found in order note.', 'warning');
+#    Nespecifikováno 
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_NESPEC'))) {
+        $stavUzivK = 'stavDoklObch.nespec';
+    } else
+#    Připraveno
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_PRIPRAVENO'))) {
+        $stavUzivK = 'stavDoklObch.pripraveno';
+    } else
+#    Schváleno
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_SCHVALENO'))) {
+        $stavUzivK = 'stavDoklObch.schvaleno';
+    } else
+#    Částečně na cestě
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_CASTECNENACESTE'))) {
+        $stavUzivK = 'stavDoklObch.castecneNaCeste';
+    } else
+#    Na cestě
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_NACESTE'))) {
+        $stavUzivK = 'stavDoklObch.naCeste';
+    } else
+#    Částečně vydáno/přijato
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_CASTVYDANO'))) {
+        $stavUzivK = 'stavDoklObch.castVydano';
+    } else
+#    Vydáno/přijato 
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_VYDANO'))) {
+        $stavUzivK = 'stavDoklObch.vydano';
+    } else
+#    Částečně hotovo 
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_CASTHOTOVO'))) {
+        $stavUzivK = 'stavDoklObch.castHotovo';
+    } else
+#    Hotovo
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_HOTOVO'))) {
+        $stavUzivK = 'stavDoklObch.hotovo';
+    } else
+#    Storno 
+    if (valueFound($state, \Ease\Functions::cfg('STAV_DOKL_OBCH_STORNO'))) {
+        $stavUzivK = 'stavDoklObch.storno';
+    } else {
+        $stavUzivK = false;
+        $orderer->addStatusMessage('ORDER_NOTE_KEYWORD "' . $keyword . '" not found in order note.', 'warning');
     }
+
+
+
 
     if ($orderer->getRecordID()) {
 
@@ -90,7 +137,7 @@ try {
             $orderer->addStatusMessage(_('Order without known state'), 'warning');
         }
     } else {
-        $orderer->addStatusMessage(_('The DOCUMENTID is not specified. Aborting'), 'warning');
+        $orderer->addStatusMessage(_('The DOCUMENTID is not specified. Aborting'), 'error');
     }
 } catch (AbraFlexi\Exception $exc) {
     echo $exc->getMessage();

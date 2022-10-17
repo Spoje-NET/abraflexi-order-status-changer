@@ -30,12 +30,23 @@ Usage
 Set Environment variables and/or `/etc/abraflexi-order-status-changer/.env` file.
 
 ```
-ORDER_NOTE_KEYWORD=Stav:
 ABRAFLEXI_URL=https://demo.flexibee.eu:5434
 ABRAFLEXI_LOGIN=winstrom
 ABRAFLEXI_PASSWORD=winstrom
 ABRAFLEXI_COMPANY=demo_de
 EASE_LOGGER=syslog|console
+
+ORDER_NOTE_KEYWORD=Stav:
+STAV_DOKL_OBCH_NESPEC=n/a
+STAV_DOKL_OBCH_PRIPRAVENO=Pripraveno
+STAV_DOKL_OBCH_SCHVALENO=Schvaleno
+STAV_DOKL_OBCH_CASTECNENACESTE=Castecne na ceste
+STAV_DOKL_OBCH_NACESTE=Na Ceste
+STAV_DOKL_OBCH_CASTVYDANO=Částečně vydáno
+STAV_DOKL_OBCH_VYDANO=Vydáno
+STAV_DOKL_OBCH_CASTHOTOVO=Částečně hotovo, č. hotovo
+STAV_DOKL_OBCH_HOTOVO=Hotovo
+STAV_DOKL_OBCH_STORNO=Storno
 ```
 
 Then run:
